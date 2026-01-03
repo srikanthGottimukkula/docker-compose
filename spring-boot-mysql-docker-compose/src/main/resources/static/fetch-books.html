@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Book List</title>
+</head>
+
+<body>
+
+	<h2>Book List</h2>
+
+	<button onclick="fetchBooks()">Load Books</button>
+
+	<table border="1" id="bookTable">
+		<tr>
+			<th>Book ID</th>
+			<th>Book Name</th>
+			<th>Author</th>
+		</tr>
+	</table>
+
+	<script>
+		function fetchBooks() {
+
+			fetch("http://localhost:8080/fetch")
+				.then(response => response.json())
+				.then(data => {
+
+					const table = document.getElementById("bookTable");
+
+					table.innerHTML = `
+            <tr>
+                <th>Book ID</th>
+                <th>Book Name</th>
+                <th>Author</th>
+            </tr>
+        `;
+
+
+					data.forEach(book => {
+						const row = table.insertRow();
+						row.insertCell(0).innerText = book.bookId;
+						row.insertCell(1).innerText = book.bookName;
+						row.insertCell(2).innerText = book.author;
+					});
+
+				})
+				.catch(error => {
+					console.error("Error:", error);
+				});
+		}
+	</script>
+
+</body>
+
+</html>
